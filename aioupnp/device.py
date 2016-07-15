@@ -10,10 +10,12 @@ class Device(object):
 
 
     Attributes:
-        version (:obj:`UPnPVersion`, required): UPnP device architecture version this device supports.
+        version (:obj:`UPnPVersion`, required): UPnP device architecture
+            version this device supports.
         device_type (str, required): The device type URI.
-        friendly_name (str, required): A human friendly device name, control points use this
-            for presentation purposes (i.e. when selecting device).
+        friendly_name (str, required): A human friendly device name,
+            control points use this for presentation purposes
+            (i.e. when selecting device).
         manufacturer (str, required): Name of the manufacturer of this device.
         manufacturer_url (str): URL to the manufacturer website.
 

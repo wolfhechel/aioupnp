@@ -10,6 +10,7 @@ docs:
 	$(SETUP_PY) build_sphinx
 
 test:
+	$(SETUP_PY) flake8
 	$(SETUP_PY) pytest --addopts="tests --cov=aioupnp"
 
 

@@ -39,13 +39,16 @@ class ServiceType(type):
         action_list = OrderedDict()
 
         for (attr_name, attr_value) in __dict__.items():
-            if callable(attr_value) and getattr(attr_value, '_is_action', False):
+            if (callable(attr_value)
+                    and getattr(attr_value, '_is_action', False)):
                 action_list[attr_name] = attr_value
 
         return action_list
 
     def __new__(mcs, name, bases, __dict__):
-        __dict__['service_state_table'] = mcs._lookup_service_state_table(__dict__)
+        __dict__['service_state_table'] = mcs._lookup_service_state_table(
+            __dict__
+        )
         __dict__['action_list'] = mcs._lookup_action_list(__dict__)
 
         return super().__new__(mcs, name, bases, __dict__)

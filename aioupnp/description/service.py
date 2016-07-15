@@ -45,12 +45,23 @@ class ServiceDescription(object):
 
         return spec_version
 
-    def _add_arguments_to_argument_list(self, argument_list, arg_dict, direction):
+    def _add_arguments_to_argument_list(self,
+                                        argument_list,
+                                        arg_dict,
+                                        direction):
         for (argument_name, state_variable) in arg_dict.items():
             argument = ET.SubElement(argument_list, 'argument')
             ET.SubElement(argument, 'name').text = argument_name
             ET.SubElement(argument, 'direction').text = direction
-            ET.SubElement(argument, 'relatedStateVariable').text = self._service.state_variable_name(state_variable)
+
+            state_variable_name = self._service.state_variable_name(
+                state_variable
+            )
+
+            ET.SubElement(
+                argument,
+                'relatedStateVariable'
+            ).text = state_variable_name
 
     def _action_element(self, name, action):
         action_el = ET.Element('action')
@@ -60,8 +71,17 @@ class ServiceDescription(object):
         if action.out_args or action.in_args:
             argument_list = ET.SubElement(action_el, 'argumentList')
 
-            self._add_arguments_to_argument_list(argument_list, action.in_args, 'in')
-            self._add_arguments_to_argument_list(argument_list, action.out_args, 'out')
+            self._add_arguments_to_argument_list(
+                argument_list,
+                action.in_args,
+                'in'
+            )
+
+            self._add_arguments_to_argument_list(
+                argument_list,
+                action.out_args,
+                'out'
+            )
 
         return action_el
 
@@ -69,8 +89,10 @@ class ServiceDescription(object):
         if self._service.action_list:
             action_list = ET.Element('actionList')
 
-            for (action_name, action_method) in self._service.action_list.items():
-                action_list.append(self._action_element(action_name, action_method))
+            for (name, method) in self._service.action_list.items():
+                action_list.append(
+                    self._action_element(name, method)
+                )
         else:
             action_list = None
 
@@ -81,15 +103,21 @@ class ServiceDescription(object):
 
         # TODO: Add sendEvents, multicast, allowedValues, allowedValueRange
         ET.SubElement(state_variable_el, 'name').text = name
-        ET.SubElement(state_variable_el, 'dataType').text = state_variable.data_type
+
+        ET.SubElement(
+            state_variable_el,
+            'dataType'
+        ).text = state_variable.data_type
 
         return state_variable_el
 
     def _service_state_table_element(self):
         service_state_table = ET.Element('serviceStateTable')
 
-        for (name, state_variable) in self._service.service_state_table.items():
-            service_state_table.append(self._state_variable_element(name, state_variable))
+        for (name, variable) in self._service.service_state_table.items():
+            service_state_table.append(
+                self._state_variable_element(name, variable)
+            )
 
         return service_state_table
 
