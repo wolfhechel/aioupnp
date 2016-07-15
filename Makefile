@@ -10,6 +10,7 @@ docs:
 	$(SETUP_PY) build_sphinx
 
 test:
-	py.test tests --cov=tests
+	$(SETUP_PY) pytest --addopts="tests --cov=aioupnp"
+
 
 .PHONY: docs test install all
