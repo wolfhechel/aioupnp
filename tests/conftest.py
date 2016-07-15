@@ -10,9 +10,9 @@ class BasicService(Service):
 
     service_type = 'urn:schemas-upnp-org:service:BasicService:1'
 
-    TestVariable = StateVariable('i4')
+    TestVariable = StateVariable('i4', allowed_values=[1, 2, 3], default_value=1)
 
-    AnotherTestVariable = StateVariable('string')
+    AnotherTestVariable = StateVariable('string', send_events=False, multicast=True)
 
     @Action
     def GetTestVariable(self) -> (('TestVariable', TestVariable),):

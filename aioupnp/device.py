@@ -21,6 +21,8 @@ class Device(object):
 
     Todo:
         * Finish describing all properties here
+        * Add support for device icons
+        * Add support for embedded devices
     """
 
     _config_id = 0

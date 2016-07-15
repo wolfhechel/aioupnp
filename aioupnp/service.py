@@ -15,8 +15,26 @@ class StateVariable(object):
 
     data_type = None
 
-    def __init__(self, data_type):
+    send_events = None
+
+    multicast = None
+
+    allowed_values = None
+
+    default_value = None
+
+    def __init__(self,
+                 data_type,
+                 send_events=None,
+                 multicast=None,
+                 allowed_values=None,
+                 default_value=None):
+
         self.data_type = data_type
+        self.send_events = send_events
+        self.multicast = multicast
+        self.allowed_values = allowed_values or []
+        self.default_value = default_value
 
 
 class ServiceType(type):
@@ -77,4 +95,5 @@ class Service(object, metaclass=ServiceType):
         return next(
             name for name, variable
             in cls.service_state_table.items()
-            if variable == state_variable)
+            if variable == state_variable
+        )

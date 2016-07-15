@@ -99,15 +99,42 @@ class ServiceDescription(object):
         return action_list
 
     def _state_variable_element(self, name, state_variable):
-        state_variable_el = ET.Element('stateVariable')
+        attribs = {}
 
-        # TODO: Add sendEvents, multicast, allowedValues, allowedValueRange
+        if state_variable.send_events is not None:
+            attribs['sendEvents'] = '1' if state_variable.send_events else '0'
+
+        if state_variable.multicast is not None:
+            attribs['multicast'] = '1' if state_variable.multicast else '0'
+
+        state_variable_el = ET.Element('stateVariable', attrib=attribs)
+
         ET.SubElement(state_variable_el, 'name').text = name
 
         ET.SubElement(
             state_variable_el,
             'dataType'
         ).text = state_variable.data_type
+
+        if state_variable.default_value is not None:
+            ET.SubElement(
+                state_variable_el,
+                'defaultValue'
+            ).text = str(state_variable.default_value)
+
+        if state_variable.allowed_values:
+            allowed_value_list = ET.SubElement(
+                state_variable_el,
+                'allowedValueList'
+            )
+
+            for value in state_variable.allowed_values:
+                ET.SubElement(
+                    allowed_value_list,
+                    'allowedValue'
+                ).text = str(value)
+
+        # TODO: Add allowedValueRange
 
         return state_variable_el
 
